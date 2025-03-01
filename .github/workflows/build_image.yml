@@ -17,7 +17,7 @@ jobs:
             git curl
       - name: Download latest Pi OS image
         run: |
-          wget -O rpi.img.xz https://downloads.raspberrypi.com/raspios_lite_armhf_latest
+          wget -q -O rpi.img.xz https://downloads.raspberrypi.com/raspios_lite_armhf_latest
           xz -d rpi.img.xz
       - name: Mount the image
         run: |
@@ -26,9 +26,9 @@ jobs:
           sudo mount $(ls $(sudo losetup -Pf --show rpi.img)p2) /mnt/rpi_root
       - name: Install Ansible in the image
         run: |
-          cp /usr/bin/qemu-arm-static /mnt/rpi_root/usr/bin
-          chroot /mnt/rpi_root /bin/bash -c "apt-get update && apt-get install -y ansible"
-          rm /mnt/rpi_root/usr/bin/qemu-arm-static
+          sudo cp /usr/bin/qemu-arm-static /mnt/rpi_root/usr/bin
+          sudo chroot /mnt/rpi_root /bin/bash -c "apt-get update && apt-get install -y ansible"
+          sudo rm /mnt/rpi_root/usr/bin/qemu-arm-static
       - name: Unmount the image
         run: |
           umount /mnt/rpi_boot

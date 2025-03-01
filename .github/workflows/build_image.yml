@@ -19,15 +19,15 @@ jobs:
         run: |
           wget -q -O rpi.img.xz https://downloads.raspberrypi.com/raspios_lite_armhf_latest
           xz -d rpi.img.xz
-      - name: Mount the image and resize the root filesystem
+      - name: Add space to the image
+        run: |
+          sudo dd if=/dev/zero of=rpi.img bs=1M count=1024 conv=notrunc oflag=append
+      - name: Mount the image and install Ansible
         run: |
           sudo mkdir -p /mnt/rpi_boot /mnt/rpi_root
           sudo mount $(ls $(sudo losetup -Pf --show rpi.img)p1) /mnt/rpi_boot
           sudo mount $(ls $(sudo losetup -Pf --show rpi.img)p2) /mnt/rpi_root
-          sudo e2fsck -yf $(sudo losetup -Pf --show rpi.img)p2
           sudo resize2fs $(sudo losetup -Pf --show rpi.img)p2
-      - name: Install Ansible in the image
-        run: |
           sudo cp /usr/bin/qemu-arm-static /mnt/rpi_root/usr/bin
           sudo chroot /mnt/rpi_root /bin/bash -c "apt-get update && apt-get install -y ansible"
           sudo rm /mnt/rpi_root/usr/bin/qemu-arm-static

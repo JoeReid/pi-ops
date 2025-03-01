@@ -21,7 +21,7 @@ jobs:
           xz -d rpi.img.xz
       - name: Mount the image
         run: |
-          mkdir -p /mnt/rpi_boot /mnt/rpi_root
+          sudo mkdir -p /mnt/rpi_boot /mnt/rpi_root
           sudo mount $(ls $(losetup -Pf --show rpi.img)p1) /mnt/rpi_boot
           sudo mount $(ls $(losetup -Pf --show rpi.img)p2) /mnt/rpi_root
       - name: Install Ansible in the image

@@ -30,7 +30,7 @@ jobs:
           sudo e2fsck -yf $(sudo losetup -Pf --show rpi.img)p2
           sudo resize2fs $(sudo losetup -Pf --show rpi.img)p2
           sudo cp /usr/bin/qemu-arm-static /mnt/rpi_root/usr/bin
-          #sudo chroot /mnt/rpi_root /bin/bash -c "apt-get update && apt-get install -y ansible"
+          sudo chroot /mnt/rpi_root /bin/bash -c "apt-get update"
           sudo chroot /mnt/rpi_root /bin/bash -c "apt-get install -y ansible"
           sudo rm /mnt/rpi_root/usr/bin/qemu-arm-static
       - name: Unmount the image

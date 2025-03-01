@@ -27,6 +27,7 @@ jobs:
           sudo mkdir -p /mnt/rpi_boot /mnt/rpi_root
           sudo mount $(ls $(sudo losetup -Pf --show rpi.img)p1) /mnt/rpi_boot
           sudo mount $(ls $(sudo losetup -Pf --show rpi.img)p2) /mnt/rpi_root
+          sudo e2fsck -yf $(sudo losetup -Pf --show rpi.img)p2
           sudo resize2fs $(sudo losetup -Pf --show rpi.img)p2
           sudo cp /usr/bin/qemu-arm-static /mnt/rpi_root/usr/bin
           sudo chroot /mnt/rpi_root /bin/bash -c "apt-get update && apt-get install -y ansible"
